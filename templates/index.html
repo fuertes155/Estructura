@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Veterinaria Patitas</title>
+    <style>
+        /* Added a font family and font size to improve readability */
+        body {
+            font-family: Open Sans, Arial, sans-serif;
+            font-size: 16px;
+            background-color: #fff; /* Changed background color to white */
+            color: #333; /* Changed text color to dark gray */
+            margin: 0;
+            padding: 0;
+        }
+        /* Improved header styling with a background image and gradient */
+        header {
+            background-image: linear-gradient(to bottom, #4CAF50, #3e8e41);
+            background-size: 100% 300px;
+            background-position: 0% 100%;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-bottom: 2px solid #3e8e41;
+        }
+        /* Improved container styling */
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+        /* Improved form styling with better spacing and alignment */
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        /* Improved history styling */
+        .history {
+            margin-top: 20px;
+            padding: 20px;
+            border-left: 5px solid #4CAF50;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .history h2 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .history ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .history li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .history li:last-child {
+            border-bottom: none;
+        }
+        /* Improved button styling with a larger font size and bold font weight */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #add-animal {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        #add-animal:hover {
+            background-color: #3e8e41;
+        }
+        /* Added styles to improve layout and spacing */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: inline-block;
+            width: 150px;
+        }
+        .form-group input[type="text"], .form-group select {
+            width: calc(100% - 150px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Clínica Veterinaria Patitas</h1>
+    </header>
+    <div class="container">
+        <form method="POST">
+            <div class="form-group">
+                <label for="name">Animal Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter animal's name" required>
+            </div>
+            <div class="form-group">
+                <label for="species">Species:</label>
+                <input type="text" id="species" name="species" placeholder="Enter species" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="text" id="age" name="age" placeholder="Enter age" required>
+            </div>
+            <div class="form-group">
+                <label for="illness">Illness:</label>
+                <select id="illness" name="illness">
+                    <option value="">Select an illness</option>
+                    {% for illness in illnesses %}
+                        <option value="{{ illness }}">{{ illness }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="treatment">Treatment:</label>
+                <select id="treatment" name="treatment">
+                    <option value="">Select a treatment</option>
+                    {% for treatment in treatments %}
+                        <option value="{{ treatment }}">{{ treatment }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="button-container">
+                <button id="add-animal">Add Animal</button>
+            </div>
+            <div class="history">
+                <h2>History</h2>
+                <ul id="history-list"></ul>
+            </div>
+
+            <script>
+                const form = document.querySelector('form');
+                const historyList = document.querySelector('#history-list');
+                const addAnimalButton = document.querySelector('#add-animal');
+
+                let animals = [];
+
+                addAnimalButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const animalData = {};
+
+                    formData.forEach((value, key) => {
+                        animalData[key] = value;
+                    });
+
+                    animals.push(animalData);
+
+                    const historyItem = document.createElement('li');
+                    historyItem.textContent = `Animal ${animals.length}: ${animalData.name} (${animalData.species}) - ${animalData.age} years old - ${animalData.illness} - ${animalData.treatment}`;
+                    historyList.appendChild(historyItem);
+
+                    form.reset();
+                });
+            </script>
+        </form>
+    </div>
+</body>
+</html>
